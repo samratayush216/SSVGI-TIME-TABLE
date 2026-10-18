@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SSVGI Smart Campus | Ayush Samrat</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+:root{
+    --purple:#702a91;
+    --gold:#e4d49a;
+    --blue:#1254a0;
+    --dark:#101d3a;
+    --light:#f4f6ff;
+}
+
+body{
+    font-family:Arial,sans-serif;
+    background:var(--light);
+    color:var(--dark);
+}
+
+button,input,select{
+    font:inherit;
+}
+
+/* WELCOME ANIMATION */
+
+#welcome{
+    position:fixed;
+    inset:0;
+    z-index:1000;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    color:white;
+    background:linear-gradient(135deg,#10113c,#702a91,#1254a0);
+    transition:opacity 1s,visibility 1s;
+    overflow:hidden;
+}
+
+#welcome h1{
+    font-size:clamp(48px,12vw,85px);
+    letter-spacing:8px;
+}
+
+#welcome p{
+    margin-top:12px;
+    color:var(--gold);
+    letter-spacing:2px;
+}
+
+.gate{
+    display:flex;
+    gap:5px;
+    margin-top:30px;
+    perspective:1000px;
+}
+
+.door{
+    width:105px;
+    height:155px;
+    background:linear-gradient(145deg,#702a91,#35105b);
+    border:5px solid var(--gold);
+    border-radius:10px;
+    box-shadow:0 0 30px #ffffff22;
+}
+
+.door.left{
+    transform-origin:left;
+    animation:openLeft 2s ease-in-out forwards;
+}
+
+.door.right{
+    transform-origin:right;
+    animation:openRight 2s ease-in-out forwards;
+}
+
+@keyframes openLeft{
+    to{transform:rotateY(-115deg)}
+}
+
+@keyframes openRight{
+    to{transform:rotateY(115deg)}
+}
+
+.robot{
+    font-size:65px;
+    margin-top:-78px;
+    z-index:2;
+    animation:wave 1s infinite alternate;
+}
+
+@keyframes wave{
+    to{transform:translateY(-8px) rotate(5deg)}
+}
+
+#welcome.hide{
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+}
+
+/* CREATOR INTRO */
+
+#creator{
+    display:none;
+    position:fixed;
+    inset:0;
+    z-index:900;
+    background:linear-gradient(135deg,#10113c,#702a91,#1254a0);
+    color:white;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:20px;
+}
+
+#creator.show{
+    display:flex;
+    animation:fadeIn .8s;
+}
+
+.creator-card{
+    max-width:420px;
+    width:100%;
+    padding:32px 22px;
+    border:1px solid #ffffff45;
+    border-radius:25px;
+    background:#ffffff12;
+    box-shadow:0 15px 50px #0004;
+}
+
+.creator-card h2{
+    font-size:28px;
+    margin:15px 0 8px;
+}
+
+.creator-card p{
+    line-height:1.8;
+}
+
+.creator-avatar{
+    width:95px;
+    height:95px;
+    border-radius:50%;
+    margin:auto;
+    background:var(--gold);
+    color:var(--purple);
+    border:4px solid white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:32px;
+    font-weight:bold;
+}
+
+.creator-credit{
+    margin-top:15px;
+    color:var(--gold);
+    font-weight:bold;
+}
+
+.enter-btn{
+    margin-top:22px;
+    padding:13px 24px;
+    border:0;
+    border-radius:30px;
+    background:var(--gold);
+    color:#32124c;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+@keyframes fadeIn{
+    from{opacity:0;transform:translateY(15px)}
+    to{opacity:1;transform:translateY(0)}
+}
+
+/* HEADER */
+
+header{
+    background:linear-gradient(120deg,#10113c,#702a91,#1254a0);
+    color:white;
+    text-align:center;
+    padding:24px 12px 32px;
+    border-radius:0 0 30px 30px;
+}
+
+.ssvgi-logo{
+    width:100px;
+    height:110px;
+    margin:0 auto 12px;
+    position:relative;
+    filter:drop-shadow(0 5px 8px #0003);
+}
+
+.ssvgi-logo svg{
+    width:100%;
+    height:100%;
+    display:block;
+}
+
+header h1{
+    font-size:clamp(30px,7vw,45px);
+    letter-spacing:4px;
+}
+
+header h2{
+    color:var(--gold);
+    margin-top:8px;
+    font-size:18px;
+}
+
+header p{
+    margin-top:10px;
+    color:#f0eaff;
+    font-size:14px;
+}
+
+/* NAVIGATION */
+
+nav{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:9px;
+    padding:17px 8px;
+}
+
+nav button{
+    border:0;
+    border-radius:25px;
+    padding:11px 16px;
+    background:white;
+    color:var(--dark);
+    font-weight:bold;
+    box-shadow:0 3px 12px #0000000c;
+    cursor:pointer;
+}
+
+nav button.active,
+nav button:hover{
+    background:var(--purple);
+    color:white;
+}
+
+/* MAIN CONTENT */
+
+main{
+    max-width:1200px;
+    margin:12px auto;
+    padding:12px;
+}
+
+.title{
+    color:var(--purple);
+    font-size:23px;
+    margin-bottom:12px;
+}
+
+.subtitle{
+    color:#65718a;
+    font-size:14px;
+    line-height:1.7;
+    margin-bottom:15px;
+}
+
+.card{
+    background:white;
+    border:1px solid #e2e7f4;
+    border-radius:20px;
+    padding:20px;
+    margin-bottom:20px;
+    box-shadow:0 6px 25px #101d3a0b;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(135px,1fr));
+    gap:12px;
+    margin:20px 0;
+}
+
+.stat{
+    background:white;
+    border:1px solid #e2e7f4;
+    padding:18px;
+    border-radius:16px;
+}
+
+.stat strong{
+    display:block;
+    color:var(--purple);
+    font-size:25px;
+    margin-bottom:7px;
+}
+
+.stat span{
+    font-size:12px;
+    color:#65718a;
+}
+
+/* FACULTY */
+
+.faculty-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+    gap:12px;
+}
+
+.faculty{
+    background:linear-gradient(145deg,#f8f1ff,#e9edff);
+    text-align:center;
+    padding:20px 10px;
+    border-radius:15px;
+    transition:transform .2s;
+}
+
+.faculty:hover{
+    transform:translateY(-4px);
+}
+
+.faculty .icon{
+    font-size:30px;
+    margin-bottom:8px;
+}
+
+.faculty strong{
+    display:block;
+}
+
+.faculty small{
+    display:block;
+    color:#65718a;
+    margin-top:5px;
+}
+
+/* TIMETABLE */
+
+.controls{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin:15px 0;
+}
+
+.controls input,
+.controls select{
+    flex:1;
+    min-width:150px;
+    padding:12px;
+    border:1px solid #cad5e8;
+    border-radius:10px;
+    background:white;
+}
+
+.table-wrap{
+    overflow:auto;
+    border-radius:12px;
+    border:1px solid #dbe3f2;
+}
+
+table{
+    width:100%;
+    min-width:1000px;
+    border-collapse:collapse;
+}
+
+th,td{
+    border:1px solid #dbe3f2;
+    padding:12px 8px;
+    text-align:center;
+    font-size:12px;
+    line-height:1.5;
+}
+
+thead th{
+    background:#35105b;
+    color:white;
+}
+
+tbody tr:nth-child(even){
+    background:#f7f3ff;
+}
+
+tbody tr:hover{
+    background:#eee5ff;
+}
+
+.day-cell{
+    background:#e9ddf5;
+    font-weight:bold;
+    color:#35105b;
+}
+
+.lunch{
+    background:#fff0cb;
+    color:#855300;
+    font-weight:bold;
+}
+
+.subject{
+    font-weight:bold;
+    color:#35105b;
+}
+
+.teacher-name{
+    font-size:11px;
+    color:#65718a;
+}
+
+.note{
+    font-size:12px;
+    line-height:1.7;
+    color:#65718a;
+    margin-top:14px;
+}
+
+/* STUDENT CORNER */
+
+.notice{
+    background:#f7f3ff;
+    padding:14px;
+    border-radius:12px;
+    margin-top:10px;
+    line-height:1.7;
+    font-size:14px;
+}
+
+/* FOOTER */
+
+footer{
+    margin-top:30px;
+    padding:28px 12px;
+    text-align:center;
+    background:#10113c;
+    color:#e6e8ff;
+    line-height:1.9;
+}
+
+footer strong{
+    color:var(--gold);
+}
+
+footer .credit{
+    color:var(--gold);
+    font-weight:bold;
+    margin-top:8px;
+}
+
+@media(max-width:600px){
+    .card{padding:15px}
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .stat{padding:14px}
+}
+</style>
+</head>
+
+<body>
+
+<!-- WELCOME DOORS -->
+
+<div id="welcome">
+    <h1>SSVGI</h1>
+    <p>WELCOME TO SMART CAMPUS</p>
+
+    <div class="gate">
+        <div class="door left"></div>
+        <div class="door right"></div>
+    </div>
+
+    <div class="robot">🤖</div>
+    <p>Opening the doors to knowledge...</p>
+</div>
+
+<!-- WEBSITE CREATOR -->
+
+<div id="creator">
+    <div class="creator-card">
+        <div class="creator-avatar">AS</div>
+        <p>WELCOME TO MY PROJECT</p>
+
+        <h2>Ayush Samrat</h2>
+
+        <p>B.Tech CSE | First Year</p>
+
+        <p class="creator-credit">
+            ✨ Designed & Created by Ayush Samrat ✨
+        </p>
+
+        <button class="enter-btn" onclick="enterWebsite()">
+            Enter Smart Campus →
+        </button>
+    </div>
+</div>
+
+<!-- HEADER -->
+
+<header>
+
+    <div class="ssvgi-logo">
+
+        <svg viewBox="0 0 200 220"
+             xmlns="http://www.w3.org/2000/svg">
+
+            <path d="M25 12 L175 12 L188 35 L180 130
+                     Q170 180 100 210
+                     Q30 180 20 130 L12 35 Z"
+                  fill="#702a91"
+                  stroke="#d8c27a"
+                  stroke-width="5"/>
+
+            <path d="M38 25 L162 25 L172 42 L165 130
+                     Q155 172 100 195
+                     Q45 172 35 130 L28 42 Z"
+                  fill="none"
+                  stroke="#d8c27a"
+                  stroke-width="2.5"/>
+
+            <text x="100" y="78"
+                  text-anchor="middle"
+                  font-size="35"
+                  font-weight="bold"
+                  fill="#e4d49a"
+                  font-family="Arial">SSVGI</text>
+
+            <path d="M43 91 Q100 70 157 91"
+                  fill="none"
+                  stroke="#e4d49a"
+                  stroke-width="4"/>
+
+            <path d="M43 101 Q100 119 157 101"
+                  fill="none"
+                  stroke="#e4d49a"
+                  stroke-width="3"/>
+
+            <g fill="#e4d49a">
+                <circle cx="55" cy="133" r="7"/>
+                <circle cx="80" cy="121" r="7"/>
+                <circle cx="100" cy="112" r="7"/>
+                <circle cx="120" cy="121" r="7"/>
+                <circle cx="145" cy="133" r="7"/>
+            </g>
+
+            <path d="M25 148 L75 160 L100 183
+                     L125 160 L175 148
+                     L132 178 L100 190 L68 178 Z"
+                  fill="#e4d49a"/>
+
+            <path d="M100 154 L100 187"
+                  stroke="#702a91"
+                  stroke-width="5"/>
+        </svg>
+
+    </div>
+
+    <h1>SSVGI</h1>
+    <h2>SMART CAMPUS PORTAL</h2>
+    <p>B.Tech CSE | First Year | Class Timetable</p>
+
+</header>
+
+<!-- NAVIGATION -->
+
+<nav>
+    <button class="active"
+            onclick="showSection('home',this)">
+        🏠 Home
+    </button>
+
+    <button onclick="showSection('faculty',this)">
+        👨‍🏫 Faculty
+    </button>
+
+    <button onclick="showSection('timetable',this)">
+        📚 Timetable
+    </button>
+
+    <button onclick="window.print()">
+        🖨️ Print
+    </button>
+</nav>
+
+<main>
+
+<!-- HOME -->
+
+<section id="home">
+
+    <h2 class="title">Welcome, Students! 👋</h2>
+
+    <p class="subtitle">
+        Your classroom information, faculty list and weekly schedule
+        — all in one place.
+    </p>
+
+    <div class="stats">
+        <div class="stat">
+            <strong>SSVGI</strong>
+            <span>Our Institution</span>
+        </div>
+
+        <div class="stat">
+            <strong>06</strong>
+            <span>Faculty Names Provided</span>
+        </div>
+
+        <div class="stat">
+            <strong>06</strong>
+            <span>Study Days</span>
+        </div>
+
+        <div class="stat">
+            <strong>🤖</strong>
+            <span>Smart Campus</span>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2 class="title">📢 Student Corner</h2>
+
+        <div class="notice">
+            📅 Check the timetable before attending your classes.
+        </div>
+
+        <div class="notice">
+            👨‍🏫 Visit the Faculty section to see teacher names.
+        </div>
+
+        <div class="notice">
+            📱 This website works on mobile phones, tablets and computers.
+        </div>
+    </div>
+
+    <div class="card">
+        <h2 class="title">💻 About This Project</h2>
+
+        <p class="subtitle">
+            This student timetable website is a personal project created
+            by Ayush Samrat to make class schedules easier to view and share.
+        </p>
+
+        <p><strong>Created by:</strong> Ayush Samrat</p>
+
+        <p style="margin-top:8px">
+            <strong>Course:</strong> B.Tech CSE First Year
+        </p>
+    </div>
+
+</section>
+
+<!-- FACULTY -->
+
+<section id="faculty" class="card" hidden>
+
+    <h2 class="title">👨‍🏫 Our Faculty</h2>
+
+    <p class="subtitle">
+        Faculty names provided for this project.
+    </p>
+
+    <div class="faculty-grid">
+
+        <div class="faculty">
+            <div class="icon">👨‍🏫</div>
+            <strong>A. B. Sir</strong>
+            <small>Faculty</small>
+        </div>
+
+        <div class="faculty">
+            <div class="icon">👨‍🏫</div>
+            <strong>K. P. Sir</strong>
+            <small>Faculty</small>
+        </div>
+
+        <div class="faculty">
+            <div class="icon">👩‍🏫</div>
+            <strong>V. K. Mam</strong>
+            <small>Faculty</small>
+        </div>
+
+        <div class="faculty">
+            <div class="icon">👨‍🏫</div>
+            <strong>A. G. Sir</strong>
+            <small>Faculty</small>
+        </div>
+
+        <div class="faculty">
+            <div class="icon">👨‍🏫</div>
+            <strong>A. P. Sir</strong>
+            <small>Faculty</small>
+        </div>
+
+        <div class="faculty">
+            <div class="icon">👨‍🏫</div>
+            <strong>S. B. Sir</strong>
+            <small>Faculty</small>
+        </div>
+
+    </div>
+</section>
+
+<!-- TIMETABLE -->
+
+<section id="timetable" class="card" hidden>
+
+    <h2 class="title">📚 Weekly Class Timetable</h2>
+
+    <p class="subtitle">
+        Search subjects or filter the timetable by day and section.
+    </p>
+
+    <div class="controls">
+
+        <input id="search"
+               type="search"
+               placeholder="🔎 Search subject or teacher..."
+               oninput="filterTable()">
+
+        <select id="sectionFilter" onchange="filterTable()">
+            <option value="all">All Sections</option>
+            <option value="A">Section A</option>
+            <option value="B">Section B</option>
+            <option value="C">Section C</option>
+        </select>
+
+        <select id="dayFilter" onchange="filterTable()">
+            <option value="all">All Days</option>
+            <option>Monday</option>
+            <option>Tuesday</option>
+            <option>Wednesday</option>
+            <option>Thursday</option>
+            <option>Friday</option>
+            <option>Saturday</option>
+        </select>
+
+    </div>
+
+    <div class="table-wrap">
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Day / Section</th>
+                    <th>9:15–10:15</th>
+                    <th>10:15–11:15</th>
+                    <th>11:15–12:15</th>
+                    <th>12:15–1:15</th>
+                    <th>1:15–2:00</th>
+                    <th>2:00–2:50</th>
+                    <th>2:50–3:40</th>
+                    <th>3:40–4:30</th>
+                </tr>
+            </thead>
+
+            <tbody id="tableBody"></tbody>
+
+        </table>
+    </div>
+
+    <p class="note">
+        Note: Check all subjects, teachers and periods against the official
+        college timetable before relying on this schedule.
+    </p>
+
+</section>
+
+</main>
+
+<!-- FOOTER -->
+
+<footer>
+    <strong>SSVGI SMART CAMPUS</strong><br>
+
+    B.Tech CSE | First Year
+
+    <div class="credit">
+        🚀 Website Created by Ayush Samrat
+    </div>
+</footer>
+
+<script>
+
+/* TIMETABLE DATA */
+
+const schedule = {
+
+Monday:{
+A:["Maths (K.P)","Physics (A.B)","P.C. & T.W (V.K)","E.E (A.K)","E.D.L (Ashu S.)","E.D LAB (Ashu S.)","—"],
+B:["P.D (A.P)","E.E (A.K)","Maths (K.P)","Physics (A.B)","Prog. Lang. (S.B)","Prog. Lang. Lab (S.B)","—"],
+C:["Prog. Lang. (S.B)","AI & Prompt (A.G)","P.D (A.P)","Physics (A.B)","Prog. Lang. (S.B)","Physics","—"]
+},
+
+Tuesday:{
+A:["Maths (K.P)","Physics (A.B)","P.D (A.P)","P.C. & T.W (V.K)","Prog. Lang. (S.B)","EE LAB (A.K)","PHY LAB (A.B)"],
+B:["Prog. Lang. (S.B)","AI & Prompt (A.G)","E.E (A.K)","Maths (K.P)","Physics (A.B)","ED LAB (Ashu S.)","—"],
+C:["E.E (A.K)","P.C. & T.W (V.K)","Prog. Lang. (S.B)","Physics (A.B)","Maths (K.P)","ED LAB (Ashu S.)","—"]
+},
+
+Wednesday:{
+A:["Prog. Lang. (S.B)","AI & Prompt (A.G)","P.C. & T.W (V.K)","Maths (K.P)","AI & Prompt (A.G)","Prog. Lang. Lab (S.B)","—"],
+B:["E.E (A.K)","Physics (A.B)","P.C. & T.W (V.K)","Maths (K.P)","Physics (A.B)","EE LAB (A.K)","—"],
+C:["Maths (K.P)","P.D (A.P)","Prog. Lang. (S.B)","E.E (A.K)","P.C. & T.W (V.K)","PHY LAB (A.B)","—"]
+},
+
+Thursday:{
+A:["Maths (K.P)","P.C. & T.W (V.K)","AI & Prompt (A.G)","E.E (A.K)","Physics (A.B)","ED LAB (Ashu S.)","—"],
+B:["P.C. & T.W (V.K)","Maths (K.P)","Physics (A.B)","Prog. Lang. (S.B)","Prog. Lang. Lab (S.B)","PHY LAB (A.B)","—"],
+C:["Prog. Lang. (S.B)","Physics (A.B)","E.E (A.K)","Maths (K.P)","P.C. & T.W (V.K)","ED LAB (Ashu S.)","—"]
+},
+
+Friday:{
+A:["P.D (A.P)","Maths (K.P)","Prog. Lang. (S.B)","Physics (A.B)","Prog. Lang. Lab (S.B)","EE LAB (A.K)","—"],
+B:["P.C. & T.W (V.K)","Maths (K.P)","P.D (A.P)","Prog. Lang. (S.B)","Physics (A.B)","PHY LAB (A.B)","—"],
+C:["E.E (A.K)","LIB","P.C. & T.W (V.K)","AI & Prompt (A.G)","Maths (K.P)","Prog. Lang. Lab (S.B)","—"]
+},
+
+Saturday:{
+A:["P.D (A.P)","AI & Prompt (A.G)","LIB","Prog. Lang. (S.B)","Maths (K.P)","P.C. & T.W (V.K)","ENG. LAP (V.K)"],
+B:["P.C. & T.W (V.K)","P.D (A.P)","Maths (K.P)","AI & Prompt (A.G)","P.C. & T.W (V.K)","Physics (A.B)","E.E (A.K)"],
+C:["Physics (A.B)","Prog. Lang. (S.B)","P.C. & T.W (V.K)","Physics (A.B)","E.E (A.K)","Maths (K.P)","LIB"]
+}
+
+};
+
+/* FORMAT SUBJECTS */
+
+function formatSubject(value){
+
+    if(!value || value==="—"){
+        return "—";
+    }
+
+    const match=value.match(/^(.*?)\s*\((.*?)\)$/);
+
+    if(match){
+        return `<span class="subject">${match[1]}</span>
+                <br>
+                <span class="teacher-name">${match[2]}</span>`;
+    }
+
+    return `<span class="subject">${value}</span>`;
+}
+
+/* BUILD TABLE */
+
+const tbody=document.getElementById("tableBody");
+
+for(const [day,sections] of Object.entries(schedule)){
+
+    for(const [section,subjects] of Object.entries(sections)){
+
+        const tr=document.createElement("tr");
+
+        tr.dataset.day=day;
+        tr.dataset.section=section;
+
+        let html=`<td class="day-cell">${day}<br>Section ${section}</td>`;
+
+        for(let i=0;i<4;i++){
+            html+=`<td>${formatSubject(subjects[i])}</td>`;
+        }
+
+        html+=`<td class="lunch">🍱<br>Lunch</td>`;
+
+        for(let i=4;i<7;i++){
+            html+=`<td>${formatSubject(subjects[i])}</td>`;
+        }
+
+        tr.innerHTML=html;
+        tbody.appendChild(tr);
+    }
+}
+
+/* SEARCH AND FILTER */
+
+function filterTable(){
+
+    const query=document.getElementById("search").value.toLowerCase();
+    const section=document.getElementById("sectionFilter").value;
+    const day=document.getElementById("dayFilter").value;
+
+    document.querySelectorAll("#tableBody tr").forEach(row=>{
+
+        const matchesSearch=row.innerText.toLowerCase().includes(query);
+        const matchesSection=section==="all" || row.dataset.section===section;
+        const matchesDay=day==="all" || row.dataset.day===day;
+
+        row.style.display=
+            matchesSearch && matchesSection && matchesDay ? "" : "none";
+    });
+}
+
+/* NAVIGATION */
+
+function showSection(id,button){
+
+    ["home","faculty","timetable"].forEach(section=>{
+        document.getElementById(section).hidden=(section!==id);
+    });
+
+    document.querySelectorAll("nav button").forEach(btn=>{
+        btn.classList.remove("active");
+    });
+
+    button.classList.add("active");
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+}
+
+/* ENTER WEBSITE */
+
+function enterWebsite(){
+    document.getElementById("creator").classList.remove("show");
+}
+
+/* START ANIMATION */
+
+window.addEventListener("load",()=>{
+
+    setTimeout(()=>{
+
+        document.getElementById("welcome").classList.add("hide");
+
+        setTimeout(()=>{
+            document.getElementById("creator").classList.add("show");
+        },500);
+
+    },2500);
+
+});
+
+</script>
+
+</body>
+</html>
